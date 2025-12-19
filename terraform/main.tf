@@ -10,6 +10,14 @@ module "network" {
 module "security" {
   source = "./modules/security"
 
-  vpc_id               = module.network.vpc_id
-  allowed_https_cidr   = ["0.0.0.0/0"]
+  vpc_id             = module.network.vpc_id
+  allowed_https_cidr = ["0.0.0.0/0"]
+}
+
+module "compute" {
+  source = "./modules/compute"
+
+  subnet_id         = module.network.public_subnets[0]
+  security_group_id = module.security.security_group_id
+  iam_role_name     = module.security.iam_role_name
 }
